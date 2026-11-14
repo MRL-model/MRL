@@ -27,7 +27,7 @@ if strcmpi(zMode, 'pls') == 1
     xstd = std(connectionC);
     ymean = mean(subDataX);
     ystd = std(subDataX);
-    connectionlnccentered = (connectionC - xmean(ones(N,1),:))./xstd(ones(N,1),:);%%%./点除,如果a、b是矩阵，a./b就是a、b中对应的每个元素相除，得到一个新的矩阵
+    connectionlnccentered = (connectionC - xmean(ones(N,1),:))./xstd(ones(N,1),:);
     subDataXcentered = (subDataX - ymean(ones(N,1),:))./ystd(ones(N,1),:);
     [Xloadings,Yloadings,Xscores,Yscores,Weights] = simpls(connectionlnccentered,subDataXcentered,numC);
     sublncDataX = Xloadings*Yloadings';
@@ -59,7 +59,7 @@ else
                     oneRowlncDataX = X2(1,:);
             end
         end
-        sublncDataX = [sublncDataX; oneRowlncDataX];%%%%构建矩阵Z
+        sublncDataX = [sublncDataX; oneRowlncDataX];
     end
 end
 %%%%%% output Z file
