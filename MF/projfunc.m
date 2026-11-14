@@ -32,7 +32,7 @@ while 1,
     v = alphap*w + v;
     
     if all(v>=0),
-% We've found our solution
+
 usediters = j+1;
 break;
     end
