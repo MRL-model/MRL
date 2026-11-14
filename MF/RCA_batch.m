@@ -1,5 +1,4 @@
 function RCA_batch(X1, C1, zMode, nmfFlag, keepOrilncFlag,lnc_label,gene_label,sample_label)
-% this program create output1.dat, not sort y matrix  (Bin Yan)
 % (1) Open C-T binding data file
 tokens = C1;
 lncSym = lnc_label;
