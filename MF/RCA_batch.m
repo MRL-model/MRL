@@ -1,13 +1,9 @@
 function RCA_batch(X1, C1, zMode, nmfFlag, keepOrilncFlag,lnc_label,gene_label,sample_label)
-% (1) Open C-T binding data file
 tokens = C1;
 lncSym = lnc_label;
 % Get data
 subDataX = X1;
-
-[N, M] = size(subDataX);  % N: number of genes. 
-                        % M: number of experiments.
-
+[N, M] = size(subDataX); 
 % Get gene symbol of array data
 
 geneSymID = gene_label;
@@ -15,7 +11,7 @@ geneSymID = gene_label;
 % Get sample label of array data
 sampleID = sample_label;
 
-% construct connectionComp sparse matrix from conserved motif information
+% construct connectionComp sparse matrix
 numC = length(lncSym);
 connectionC = C1';
 
@@ -80,23 +76,13 @@ for i = 1:numC,
 end
 fclose(fid1111);
 %%%%%%%%
-
-% rank standard derivation of Component profile across conditions and select top
-% lnc with higher std
 stdsublncDataX = std(sublncDataX, 0, 2);
 [sortedStdsublncDataX,sortedInxsublncDataX] = sort(stdsublncDataX,'descend');
-%%if numC < 100,
-%%   numToplncs = numC;
-%%else 
-%%    numToplncs = 100;
-%%end
+
 numToplncs = numC;
  sortedsublncYSYM = lncSym(sortedInxsublncDataX(1:numToplncs));
  sortedsublncDataX = sublncDataX(sortedInxsublncDataX(1:numToplncs),:);
  sortedconnectionlnc = connectionC(:,sortedInxsublncDataX(1:numToplncs));
-%sortedsublncYSYM = lncSym(1:numToplncs);
-%sortedsublncDataX = sublncDataX(1:numToplncs,:);
-%sortedconnectionlnc = connectionC(:,1:numToplncs);
 
 %%%% (3) Using SCA to infer regulatory network 
 
@@ -152,12 +138,9 @@ for i = 1:length(geneSYM),
 end
 fclose(fid3);
 
-% Load prior total lnc in human
-%[humanlncRowID, humanlncGeneIDCell]=lnc_label;
-%humanlncGeneID = humanlncGeneIDCell(:,1);
-%[overlaplncListSYM, inxlncListInsubYSYM, inxInhumanlnc]= intersect(geneSymID, humanlncGeneID);
+
 [overlaplncListSYM, inxlncListInsubYSYM, inxInhumanlnc]= intersect(geneSymID, lnc_label);
-% output node attribute file
+
 meansubDataX = mean(subDataX, 2);
 typelncinsubDataX = zeros(size(geneSymID));
 typelncinsubDataX(inxlncListInsubYSYM) = 1;
@@ -170,7 +153,6 @@ end
 fclose(fid1);
 
 % output Y file
-%str_file_name11 = [strtok('lnctargetlist','\.') '.dat'];
 str_file_name11 = [strtok('lnctargetlist','\.') '.txt'];
 fid11 = fopen(str_file_name11, 'wt');
 fprintf(fid11,'%s\t','NAME');
